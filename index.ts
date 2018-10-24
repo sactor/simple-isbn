@@ -7,15 +7,8 @@ export namespace isbn {
     if (!isValidIsbn10(isbn)) {
       throw new TypeError('Invalid ISBN');
     }
-    let chars = isbn.split('');
-    chars.unshift('9', '7', '8');
-    chars.pop();
-    let sum = 0;
-    for (let i = 0; i < 12; i += 1) {
-          sum += parseInt(chars[i]) * ((i % 2) ? 3 : 1);
-    }
-    chars.push(((10 - (sum % 10)) % 10).toString());
-    return chars.join('');
+    isbn = '978' + isbn.substring(0, isbn.length-1);
+    return isbn + calculateIsbn13Code(isbn);
   }
 
   export function toIsbn10(isbn: string): string {
@@ -27,14 +20,33 @@ export namespace isbn {
       throw new TypeError('Invalid ISBN');
     }
     isbn = isbn.substr(3, 9);
+    isbn = isbn.concat(calculateIsbn10Code(isbn));
+    return isbn;
+  }
+
+  export function calculateIsbn13Code(partial: string): string {
+    if (!/^\d{12}$/.test(partial)) {
+      throw new TypeError('Invalid partial ISBN 13');
+    }
+    let chars = partial.split('');
+    let sum = 0;
+    for (let i = 0; i < 12; i++) {
+          sum += parseInt(chars[i]) * ((i % 2) ? 3 : 1);
+    }
+    return ((10 - (sum % 10)) % 10).toString();
+  }
+
+  export function calculateIsbn10Code(partial: string): string {
+    if (!/^\d{9}$/.test(partial)) {
+      throw new TypeError('Invalid partial ISBN 10');
+    }
     let j = 0;
     let check = 0;
     for (let i = 10; i > 1; i--) {
-      check += parseInt(isbn[j++]) * i;
+      check += parseInt(partial[j++]) * i;
     }
     check = 11 - (check % 11);
-    isbn = isbn.concat(check === 10 ? 'X' : check.toString());
-    return isbn;
+    return check === 10 ? 'X' : check.toString();
   }
 
   export function isValidIsbn10(isbn: string): boolean {

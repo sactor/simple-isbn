@@ -1,5 +1,4 @@
 .gitignore
-index.ts
 gulpfile.js
 test.js
 tsconfig.json

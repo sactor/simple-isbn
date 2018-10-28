@@ -1,5 +1,4 @@
 .gitignore
-index.js.map
 index.ts
 gulpfile.js
 test.js

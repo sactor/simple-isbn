@@ -3,3 +3,4 @@ gulpfile.js
 test.js
 tsconfig.json
 tslint.json
+index.js.map

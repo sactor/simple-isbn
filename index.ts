@@ -1,23 +1,23 @@
 export namespace isbn {
   export function toIsbn13(isbn: string): string {
-    isbn = isbn.replace(/[- ]/gi, '');
+    isbn = isbn.replace(/[- ]/gi, "");
     if (isValidIsbn13(isbn)) {
       return isbn;
     }
     if (!isValidIsbn10(isbn)) {
-      throw new TypeError('Invalid ISBN');
+      throw new TypeError("Invalid ISBN");
     }
-    isbn = '978' + isbn.substring(0, isbn.length-1);
+    isbn = "978" + isbn.substring(0, isbn.length - 1);
     return isbn + calculateIsbn13Code(isbn);
   }
 
   export function toIsbn10(isbn: string): string {
-    isbn = isbn.replace(/[- ]/gi, '');
+    isbn = isbn.replace(/[- ]/gi, "");
     if (isValidIsbn10(isbn)) {
       return isbn;
     }
     if (!isValidIsbn13(isbn)) {
-      throw new TypeError('Invalid ISBN');
+      throw new TypeError("Invalid ISBN");
     }
     isbn = isbn.substr(3, 9);
     isbn = isbn.concat(calculateIsbn10Code(isbn));
@@ -26,19 +26,19 @@ export namespace isbn {
 
   export function calculateIsbn13Code(partial: string): string {
     if (!/^\d{12}$/.test(partial)) {
-      throw new TypeError('Invalid partial ISBN 13');
+      throw new TypeError("Invalid partial ISBN 13");
     }
-    let chars = partial.split('');
+    let chars = partial.split("");
     let sum = 0;
     for (let i = 0; i < 12; i++) {
-          sum += parseInt(chars[i]) * ((i % 2) ? 3 : 1);
+      sum += parseInt(chars[i]) * (i % 2 ? 3 : 1);
     }
     return ((10 - (sum % 10)) % 10).toString();
   }
 
   export function calculateIsbn10Code(partial: string): string {
     if (!/^\d{9}$/.test(partial)) {
-      throw new TypeError('Invalid partial ISBN 10');
+      throw new TypeError("Invalid partial ISBN 10");
     }
     let j = 0;
     let check = 0;
@@ -46,29 +46,29 @@ export namespace isbn {
       check += parseInt(partial[j++]) * i;
     }
     check = 11 - (check % 11);
-    return check === 10 ? 'X' : check.toString();
+    return check === 10 ? "X" : check.toString();
   }
 
   export function isValidIsbn10(isbn: string): boolean {
     if (!/^[\d]{9}[\dX]$/i.test(isbn)) {
       return false;
     }
-    let chars = isbn.split('');
-    if (chars[9].toUpperCase() === 'X') {
-      chars[9] = '10';
+    let chars = isbn.split("");
+    if (chars[9].toUpperCase() === "X") {
+      chars[9] = "10";
     }
     let sum = 0;
     for (let i = 0; i < chars.length; i++) {
-      sum += ((10 - i) * parseInt(chars[i]));
+      sum += (10 - i) * parseInt(chars[i]);
     }
-    return (sum % 11 === 0);
+    return sum % 11 === 0;
   }
 
   export function isValidIsbn13(isbn: string): boolean {
     if (!/^[\d]{13}$/i.test(isbn)) {
       return false;
     }
-    var chars = isbn.split('');
+    var chars = isbn.split("");
     var sum = 0;
     for (var i = 0; i < chars.length; i++) {
       if (i % 2 === 0) {
@@ -77,11 +77,11 @@ export namespace isbn {
         sum += parseInt(chars[i]) * 3;
       }
     }
-    return (sum % 10 === 0);
+    return sum % 10 === 0;
   }
 
   export function isValidIsbn(isbn: string): boolean {
-    isbn = isbn.replace(/[- ]/gi, '');
+    isbn = isbn.replace(/[- ]/gi, "");
     if (isbn.length === 10) {
       return isValidIsbn10(isbn);
     } else if (isbn.length === 13) {

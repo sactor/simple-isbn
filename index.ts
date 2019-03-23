@@ -46,7 +46,13 @@ export namespace isbn {
       check += parseInt(partial[j++]) * i;
     }
     check = 11 - (check % 11);
-    return check === 10 ? "X" : check.toString();
+    switch (check) {
+      case 10:
+        return "X";
+      case 11:
+        return "0";
+    }
+    return check.toString();
   }
 
   export function isValidIsbn10(isbn: string): boolean {

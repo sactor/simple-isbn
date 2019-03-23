@@ -49,7 +49,13 @@ var isbn;
             check += parseInt(partial[j++]) * i;
         }
         check = 11 - (check % 11);
-        return check === 10 ? "X" : check.toString();
+        switch (check) {
+            case 10:
+                return "X";
+            case 11:
+                return "0";
+        }
+        return check.toString();
     }
     isbn_1.calculateIsbn10Code = calculateIsbn10Code;
     function isValidIsbn10(isbn) {

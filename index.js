@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var isbn;
 (function (isbn_1) {
     function toIsbn13(isbn) {
+        if (typeof isbn !== "string") {
+            throw new TypeError("Invalid ISBN");
+        }
         isbn = isbn.replace(/[- ]/gi, "");
         if (isValidIsbn13(isbn)) {
             return isbn;
@@ -15,6 +18,9 @@ var isbn;
     }
     isbn_1.toIsbn13 = toIsbn13;
     function toIsbn10(isbn) {
+        if (typeof isbn !== "string") {
+            throw new TypeError("Invalid ISBN");
+        }
         isbn = isbn.replace(/[- ]/gi, "");
         if (isValidIsbn10(isbn)) {
             return isbn;
@@ -91,6 +97,9 @@ var isbn;
     }
     isbn_1.isValidIsbn13 = isValidIsbn13;
     function isValidIsbn(isbn) {
+        if (typeof isbn !== "string") {
+            return false;
+        }
         isbn = isbn.replace(/[- ]/gi, "");
         if (isbn.length === 10) {
             return isValidIsbn10(isbn);

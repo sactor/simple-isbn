@@ -1,5 +1,8 @@
 export namespace isbn {
   export function toIsbn13(isbn: string): string {
+    if (typeof isbn !== "string") {
+      throw new TypeError("Invalid ISBN");
+    }
     isbn = isbn.replace(/[- ]/gi, "");
     if (isValidIsbn13(isbn)) {
       return isbn;
@@ -12,6 +15,9 @@ export namespace isbn {
   }
 
   export function toIsbn10(isbn: string): string {
+    if (typeof isbn !== "string") {
+      throw new TypeError("Invalid ISBN");
+    }
     isbn = isbn.replace(/[- ]/gi, "");
     if (isValidIsbn10(isbn)) {
       return isbn;
@@ -87,6 +93,9 @@ export namespace isbn {
   }
 
   export function isValidIsbn(isbn: string): boolean {
+    if (typeof isbn !== "string") {
+      return false;
+    }
     isbn = isbn.replace(/[- ]/gi, "");
     if (isbn.length === 10) {
       return isValidIsbn10(isbn);

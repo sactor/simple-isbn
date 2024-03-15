@@ -25,6 +25,9 @@ export namespace isbn {
     if (!isValidIsbn13(isbn)) {
       throw new TypeError("Invalid ISBN");
     }
+    if (!isbn.startsWith("978")) {
+      throw new TypeError("Cannot convert ISBN-13 starting with " + isbn.substr(0, 3) + " to ISBN-10");
+    }
     isbn = isbn.substr(3, 9);
     isbn = isbn.concat(calculateIsbn10Code(isbn));
     return isbn;
